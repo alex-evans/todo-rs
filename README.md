@@ -4,9 +4,11 @@ Rust Learning Small Project To Do App
 
 1. As a user, I want to add a new task to my to-do list.
     - **Acceptance Criteria:**
-        - [ ] The application should prompt me for task details (such as title and description).
-        - [ ] The task should be stored persistently (e.g., in a file).
-        - [ ] I should receive feedback confirming that the task has been added successfully.
+        - [x] The application should prompt me for task details (such as title and description).
+        - [x] The task should be stored persistently (e.g., in a file).
+        - [x] I should receive feedback confirming that the task has been added successfully.
+
+        ![TODO-US1](ToDo-US1.png)
 
 2. As a user, I want to view my existing tasks in the to-do list.
     - **Acceptance Criteria:**
@@ -36,5 +38,5 @@ Rust Learning Small Project To Do App
 
 7. As a user, I want my tasks to persist across sessions.
     - **Acceptance Criteria:**
-        - The application should save tasks to a file.
-        - When I restart the app, my tasks should still be available.
+        - [ ] The application should save tasks to a file.
+        - [ ] When I restart the app, my tasks should still be available.
