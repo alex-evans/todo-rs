@@ -8,12 +8,14 @@ Rust Learning Small Project To Do App
         - [x] The task should be stored persistently (e.g., in a file).
         - [x] I should receive feedback confirming that the task has been added successfully.
 
-        ![TODO-US1](ToDo-US1.png)
+        ![TODO-US1](./images/ToDo-US1.png)
 
 2. As a user, I want to view my existing tasks in the to-do list.
     - **Acceptance Criteria:**
-        - [ ] The application should display a list of all tasks.
-        - [ ] Each task should show its title, description, and status (e.g., completed or pending).
+        - [x] The application should display a list of all tasks.
+        - [x] Each task should show its title, description, and status (e.g., completed or pending).
+
+        ![TODO-US2](./images/ToDo-US2.png)
 
 3. As a user, I want to mark a task as completed.
     - **Acceptance Criteria:**
