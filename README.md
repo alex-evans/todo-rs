@@ -19,8 +19,8 @@ Rust Learning Small Project To Do App
 
 3. As a user, I want to mark a task as completed.
     - **Acceptance Criteria:**
-        - [ ] I should be able to select a task from the list.
-        - [ ] The application should update the task’s status to “completed.”
+        - [x] I should be able to select a task from the list.
+        - [x] The application should update the task’s status to “completed.”
 
 4. As a user, I want to edit an existing task.
     - **Acceptance Criteria:**
@@ -40,5 +40,5 @@ Rust Learning Small Project To Do App
 
 7. As a user, I want my tasks to persist across sessions.
     - **Acceptance Criteria:**
-        - [ ] The application should save tasks to a file.
-        - [ ] When I restart the app, my tasks should still be available.
+        - [x] The application should save tasks to a file.
+        - [x] When I restart the app, my tasks should still be available.

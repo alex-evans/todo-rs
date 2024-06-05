@@ -1,15 +1,19 @@
 
 use chrono::prelude::*;
 use clap::Parser;
+use std::io::Error as IoError;
+use std::io::ErrorKind;
 use std::error::Error;
 use std::str::FromStr;
 
 use commands::add::add_task;
+use commands::complete::complete_task;
 use commands::list::list_tasks;
 
 mod commands {
     pub mod add;
     pub mod list;
+    pub mod complete;
 }
 
 #[derive(Parser, Debug)]
@@ -19,6 +23,8 @@ pub struct Config {
     pub add: bool,
     #[arg(short, long)]
     pub list: bool,
+    #[arg(short, long)]
+    pub complete: bool,
 }
 
 impl Config {
@@ -35,13 +41,13 @@ enum Status {
 }
 
 impl FromStr for Status {
-    type Err = ();
+    type Err = std::io::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "ToDo" => Ok(Status::ToDo),
             "Done" => Ok(Status::Done),
-            _ => Err(()),
+            _ => Err(IoError::new(ErrorKind::InvalidInput, "Invalid status")),
         }
     }
 }
@@ -66,12 +72,33 @@ impl TodoTask {
             updated_at: utc_now,
         }
     }
+
+    fn from_csv(line: String) -> Result<Self, Box<dyn Error>> {
+        let parts: Vec<&str> = line.split(',').collect();
+        if parts.len() != 5 {
+            return Err("Invalid CSV format".into());
+        }
+        let status = parts[2].trim();
+        let status_enum = Status::from_str(status)?;
+        Ok(TodoTask {
+            title: parts[0].to_string(),
+            description: parts[1].to_string(),
+            status: status_enum,
+            created_at: parts[3].parse()?,
+            updated_at: parts[4].parse()?,
+        })
+    }
+
+    fn to_csv(&self) -> String {
+        format!("{}, {}, {:?}, {}, {}", self.title, self.description, self.status, self.created_at, self.updated_at)
+    }
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     match config {
         Config { add: true, .. } => add_task()?,
         Config { list: true, .. } => list_tasks()?,
+        Config { complete: true, .. } =>  complete_task()?,
         _ => { println!("No command provided"); }
     };
 
