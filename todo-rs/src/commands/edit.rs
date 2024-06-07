@@ -7,16 +7,15 @@ use std::io::{BufRead, Write};
 
 use super::list::list_tasks;
 use crate::TodoTask;
-use crate::Status;
 
-pub fn complete_task() -> Result<(), Box<dyn Error>> {
+pub fn edit_task() -> Result<(), Box<dyn Error>> {
     list_tasks()?;
-    println!("\n\nPlease select the Task Id To Complete:\n\n");
+    println!("\n\nPlease select the Task Id To Edit:\n\n");
     let mut task_id = String::new();
     io::stdin()
         .read_line(&mut task_id)
         .expect("Failed to read line");
-    
+
     let task_id: String = match task_id.trim().parse() {
         Ok(task_id) => task_id,
         Err(_) => {
@@ -34,10 +33,27 @@ pub fn complete_task() -> Result<(), Box<dyn Error>> {
 
     for (index, line) in lines.iter_mut().enumerate() {
         if (index + 1) == task_id.parse::<usize>().unwrap() {
+            
             let mut task = TodoTask::from_csv(line.to_string())?;
-            task.status = Status::Done;
+
+            // Title
+            println!("Enter new title:");
+            let mut title = String::new();
+            io::stdin()
+                .read_line(&mut title)
+                .expect("Failed to read line");
+            task.title = title.trim().to_string();
+            
+            // Description
+            println!("Enter new description:");
+            let mut description = String::new();
+            io::stdin()
+                .read_line(&mut description)
+                .expect("Failed to read line");
+            task.description = description.trim().to_string();
+            
             task.updated_at = Utc::now();
-            println!("Task Completed: {}", task.title);
+            println!("Task Updated: {}", task.title);
             *line = task.to_csv();
             break;
         }
@@ -47,7 +63,7 @@ pub fn complete_task() -> Result<(), Box<dyn Error>> {
         .write(true)
         .truncate(true)
         .open("tasks.txt")?;
-        
+
     for line in &lines {
         writeln!(file, "{}", line)?;
     }

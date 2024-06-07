@@ -24,14 +24,14 @@ Rust Learning Small Project To Do App
 
 4. As a user, I want to edit an existing task.
     - **Acceptance Criteria:**
-        - [ ] I should be able to choose a task to edit.
-        - [ ] The application should allow me to modify the task’s title and description.
-        - [ ] The updated task details should be saved.
+        - [x] I should be able to choose a task to edit.
+        - [x] The application should allow me to modify the task’s title and description.
+        - [x] The updated task details should be saved.
 
 5. As a user, I want to delete a task from the list.
     - **Acceptance Criteria:**
-        - [ ] I should be able to select a task for deletion.
-        - [ ] The application should remove the task from the list.
+        - [x] I should be able to select a task for deletion.
+        - [x] The application should remove the task from the list.
 
 6. As a user, I want error handling for invalid inputs.
     - **Acceptance Criteria:**

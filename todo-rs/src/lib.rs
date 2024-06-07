@@ -8,12 +8,16 @@ use std::str::FromStr;
 
 use commands::add::add_task;
 use commands::complete::complete_task;
+use commands::delete::delete_task;
+use commands::edit::edit_task;
 use commands::list::list_tasks;
 
 mod commands {
     pub mod add;
     pub mod list;
     pub mod complete;
+    pub mod edit;
+    pub mod delete;
 }
 
 #[derive(Parser, Debug)]
@@ -25,6 +29,10 @@ pub struct Config {
     pub list: bool,
     #[arg(short, long)]
     pub complete: bool,
+    #[arg(short, long)]
+    pub edit: bool,
+    #[arg(short, long)]
+    pub delete: bool,
 }
 
 impl Config {
@@ -99,6 +107,8 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         Config { add: true, .. } => add_task()?,
         Config { list: true, .. } => list_tasks()?,
         Config { complete: true, .. } =>  complete_task()?,
+        Config { edit: true, .. } => edit_task()?,
+        Config { delete: true, .. } => delete_task()?,
         _ => { println!("No command provided"); }
     };
 
