@@ -30,15 +30,22 @@ pub fn delete_task() -> Result<(), Box<dyn Error>> {
     let reader = io::BufReader::new(file);
     let mut lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
     let mut new_lines: Vec<String> = Vec::new(); 
+    let mut match_found = false;
 
     for (index, line) in lines.iter_mut().enumerate() {
-        if (index + 1) == task_id.parse::<usize>().unwrap() {
+        if (index + 1) == task_id {
             let task = TodoTask::from_csv(line.to_string())?;
             println!("Task Deleted: {}", task.title);
+            match_found = true;
             continue;
         }
 
         new_lines.push(line.to_string());
+    }
+
+    if !match_found {
+        println!("No task found with the given task id");
+        return Ok(());
     }
 
     let mut file = OpenOptions::new()

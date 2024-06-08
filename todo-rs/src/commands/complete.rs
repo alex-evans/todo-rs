@@ -17,7 +17,7 @@ pub fn complete_task() -> Result<(), Box<dyn Error>> {
         .read_line(&mut task_id)
         .expect("Failed to read line");
     
-    let task_id: String = match task_id.trim().parse() {
+    let task_id: usize = match task_id.trim().parse() {
         Ok(task_id) => task_id,
         Err(_) => {
             println!("Please enter a valid task id");
@@ -31,16 +31,23 @@ pub fn complete_task() -> Result<(), Box<dyn Error>> {
 
     let reader = io::BufReader::new(file);
     let mut lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
-
+    let mut match_found = false;
+    
     for (index, line) in lines.iter_mut().enumerate() {
-        if (index + 1) == task_id.parse::<usize>().unwrap() {
+        if (index + 1) == task_id {
             let mut task = TodoTask::from_csv(line.to_string())?;
             task.status = Status::Done;
             task.updated_at = Utc::now();
             println!("Task Completed: {}", task.title);
             *line = task.to_csv();
+            match_found = true;
             break;
         }
+    }
+
+    if !match_found {
+        println!("No task found with the given task id");
+        return Ok(());
     }
 
     let mut file = OpenOptions::new()

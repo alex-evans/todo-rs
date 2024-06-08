@@ -35,8 +35,8 @@ Rust Learning Small Project To Do App
 
 6. As a user, I want error handling for invalid inputs.
     - **Acceptance Criteria:**
-        - [ ] The application should handle cases where the user provides incorrect input (e.g., non-numeric task IDs).
-        - [ ] Clear error messages should be displayed to guide the user.
+        - [x] The application should handle cases where the user provides incorrect input (e.g., non-numeric task IDs).
+        - [x] Clear error messages should be displayed to guide the user.
 
 7. As a user, I want my tasks to persist across sessions.
     - **Acceptance Criteria:**
