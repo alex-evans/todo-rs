@@ -5,23 +5,13 @@ use std::fs::OpenOptions;
 use std::io::{BufRead, Write};
 
 use super::list::list_tasks;
+use crate::helpers::helpers::select_task;
 use crate::TodoTask;
 
 pub fn delete_task() -> Result<(), Box<dyn Error>> {
     list_tasks()?;
     println!("\n\nPlease select the Task Id To Delete:\n\n");
-    let mut task_id = String::new();
-    io::stdin()
-        .read_line(&mut task_id)
-        .expect("Failed to read line");
-
-    let task_id: usize = match task_id.trim().parse() {
-        Ok(task_id) => task_id,
-        Err(_) => {
-            println!("Please enter a valid task id");
-            return Ok(());
-        }
-    };
+    let task_id = select_task()?;
 
     let file = OpenOptions::new()
         .read(true)

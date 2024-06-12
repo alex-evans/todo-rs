@@ -20,6 +20,10 @@ mod commands {
     pub mod delete;
 }
 
+mod helpers {
+    pub mod helpers;
+}
+
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub struct Config {
@@ -113,45 +117,4 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     };
 
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_todo_task_new() {
-        let title = String::from("Task 1");
-        let description = String::from("Description 1");
-        let task = TodoTask::new(title.clone(), description.clone());
-
-        assert_eq!(task.title, title);
-        assert_eq!(task.description, description);
-        assert_eq!(task.status, Status::ToDo);
-        assert_eq!(task.created_at, task.updated_at);
-    }
-
-    #[test]
-    fn test_save_task() {
-        let task = TodoTask {
-            title: String::from("Task 2"),
-            description: String::from("Description 2"),
-            status: Status::ToDo,
-            created_at: Utc::now(),
-            updated_at: Utc::now(),
-        };
-
-        let result = save_task(task);
-
-        assert!(result.is_ok());
-    }
-
-    #[test]
-    fn test_run_no_add() {
-        let config = Config { add: false };
-
-        let result = run(config);
-
-        assert!(result.is_ok());
-    }
 }

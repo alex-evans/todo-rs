@@ -56,3 +56,61 @@ fn save_task(task: TodoTask) -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use std::io;
+    use std::io::Read;
+    use std::io::Write;
+
+    #[test]
+    fn test_add_task_valid_input() {
+        // Arrange
+        let input = "Task Title\n".as_bytes();
+        let mut output = Vec::new();
+        let expected_task = TodoTask::new("Task Title".to_string(), "Task Description".to_string());
+
+        // Act
+        io::stdin().read_to_end(&mut input.to_vec()).unwrap();
+        io::stdout().write_all(&mut output).unwrap();
+        let result = add_task();
+
+        // Assert
+        assert!(result.is_ok());
+        assert_eq!(fs::read_to_string("tasks.txt").unwrap(), format!("{}, {}, {:?}, {}, {}\n", expected_task.title, expected_task.description, expected_task.status, expected_task.created_at, expected_task.updated_at));
+    }
+
+    #[test]
+    fn test_add_task_invalid_title() {
+        // Arrange
+        let input = "\n".as_bytes();
+        let mut output = Vec::new();
+
+        // Act
+        io::stdin().read_to_end(&mut input.to_vec()).unwrap();
+        io::stdout().write_all(&mut output).unwrap();
+        let result = add_task();
+
+        // Assert
+        assert!(result.is_ok());
+        assert_eq!(fs::read_to_string("tasks.txt").unwrap(), "");
+    }
+
+    #[test]
+    fn test_add_task_invalid_description() {
+        // Arrange
+        let input = "Task Title\n\n".as_bytes();
+        let mut output = Vec::new();
+
+        // Act
+        io::stdin().read_to_end(&mut input.to_vec()).unwrap();
+        io::stdout().write_all(&mut output).unwrap();
+        let result = add_task();
+
+        // Assert
+        assert!(result.is_ok());
+        assert_eq!(fs::read_to_string("tasks.txt").unwrap(), "");
+    }
+}

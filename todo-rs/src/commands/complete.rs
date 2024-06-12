@@ -8,22 +8,12 @@ use std::io::{BufRead, Write};
 use super::list::list_tasks;
 use crate::TodoTask;
 use crate::Status;
+use crate::helpers::helpers::select_task;
 
 pub fn complete_task() -> Result<(), Box<dyn Error>> {
     list_tasks()?;
     println!("\n\nPlease select the Task Id To Complete:\n\n");
-    let mut task_id = String::new();
-    io::stdin()
-        .read_line(&mut task_id)
-        .expect("Failed to read line");
-    
-    let task_id: usize = match task_id.trim().parse() {
-        Ok(task_id) => task_id,
-        Err(_) => {
-            println!("Please enter a valid task id");
-            return Ok(());
-        }
-    };
+    let task_id = select_task()?;
 
     let file = OpenOptions::new()
         .read(true)
@@ -32,7 +22,7 @@ pub fn complete_task() -> Result<(), Box<dyn Error>> {
     let reader = io::BufReader::new(file);
     let mut lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
     let mut match_found = false;
-    
+
     for (index, line) in lines.iter_mut().enumerate() {
         if (index + 1) == task_id {
             let mut task = TodoTask::from_csv(line.to_string())?;
